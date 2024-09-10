@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+}
+
+datasource db {
+  provider      = "mysql"
+  url           = env("DATABASE_URL")
+  relationMode  = "prisma"
+}
+
+model Ticket {
+  id                Int       @id @default(autoincrement())
+  title             String    @db.VarChar(255)
+  description       String    @db.Text
+  status            Status    @default(Abierto)
+  priority          Priority  @default(Media)
+  empresas          Empresas  @default(DB_Holding)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  assignedToUserId  Int? 
+  assignedToUser    User?     @relation(fields: [assignedToUserId], references: [id])
+}
+
+enum Status{
+  Abierto
+  Empezado
+  Cerrado
+}
+
+enum Priority{
+  Baja
+  Media 
+  Alta
+}
+
+enum Empresas { 
+  Voeral_Energies
+  Estudener_Energias_Renovables
+  DB_Holding
+  Nodus
+  Sycba
+  La_Monumental
+}
+
+model User{
+  id        Int     @id @default(autoincrement())
+  name      String
+  username  String  @unique
+  password  String
+  role      ROLE    @default(USER)
+  assignedTickets   Ticket[]
+}
+
+enum ROLE{
+  ADMIN
+  TECH
+  USER
+}
