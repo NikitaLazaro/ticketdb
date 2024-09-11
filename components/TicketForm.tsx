@@ -72,7 +72,7 @@ async function onSubmit(values: z.infer<typeof ticketSchema>){
             control={form.control} 
             defaultValue={ticket?.description}
             render={({field}) => (
-                <SimpleMDE placeholder="Description" {...field} />
+                <SimpleMDE placeholder="Descripción" {...field} />
             )}
             
             />
